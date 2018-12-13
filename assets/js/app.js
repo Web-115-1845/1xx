@@ -15,50 +15,31 @@ function init() {
       }
     }
   });
-
-
   $.ajax({
     method: 'GET',
     url: 'https://me.wherecaniplaygames.com/wp-json/wp-api-menus/v2/menus/2',
     dataType: 'json',
     success: function(data) {
-
       $('nav').hide();
-
       var menu = menuBuilder(data.items);
-
       $('nav').html(menu).slideDown();
-
-      $('nav li a').click(function() {
-        getPage($(this).data("pgid"));
+      $('nav li a').click(function() {getPage($(this).data("pgid"));
       });
-
       getPage(49);
-
       $("#loaderDiv").fadeOut("slow");
-
     },
     error: function() {
       console.log('you done fucked up Ay Ay Ron');
     }
   });
 }
-
-
 function menuBuilder(obj) {
-
   var theMenu = '';
-
   if (obj.length > 0) {
-
     theMenu = theMenu + '<ul>';
-
     obj.forEach(function(item) {
-
       theMenu = theMenu + '<li><a href="#" data-pgid="' + item.object_id + '">' + item.title + '</a>';
-
       if (item.children) {
-
         theMenu = theMenu + menuBuilder(item.children);
       }
       theMenu = theMenu + '</li>';
