@@ -32,11 +32,33 @@ function init() {
       console.log('you done fucked up Ay Ay Ron');
     }
   });
+  $.ajax({
+    method: 'GET',
+    url: 'https://me.wherecaniplaygames.com/wp-json/wp-api-menus/v2/menus/3',
+    dataType: 'json',
+    success: function(data) {
+      var menu = menuBuilder(data.items, 'genLinks', 'foorter-ul');
+      $('#genLinks').replaceWith(menu);
+
+      $('#genLinks li a').click(function () {
+        getPage($(this).data("pgid"));
+      });
+
+
+    },
+    error: function() {
+      console.log('you done fucked up Ay Ay Ron');
+    }
+  });
 }
-function menuBuilder(obj) {
+function menuBuilder(obj, targetEl, classInfo) {
   var theMenu = '';
   if (obj.length > 0) {
-    theMenu = theMenu + '<ul>';
+
+    let target = (targetEl)?' id="'+targetEl+'"':'';
+    let elClass = (classInfo)?' class="'+classInfo+'"':'';
+
+    theMenu = theMenu + '<ul'+target+''+elClass+'>';
     obj.forEach(function(item) {
       theMenu = theMenu + '<li><a href="#" data-pgid="' + item.object_id + '">' + item.title + '</a>';
       if (item.children) {
